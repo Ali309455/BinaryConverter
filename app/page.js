@@ -1,103 +1,373 @@
-import Image from "next/image";
+"use client";
+import { useState, useEffect } from "react";
+import { FloatLabel } from "primereact/floatlabel";
+import { InputText } from "primereact/inputtext";
+import { RadioButton } from "primereact/radiobutton";
+import "primereact/resources/themes/lara-light-cyan/theme.css";
+import { Button } from "primereact/button";
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [inputValue, setInputValue] = useState("");
+  const [copiedText, setCopiedText] = useState("");
+  const [ingredient, setIngredient] = useState("BINARY");
+  const [convertedvalues, setConvertedvalues] = useState({
+    binary: "none",
+    octal: "none",
+    hexadecimal: "none",
+  });
+  useEffect(() => {
+    if (convertedvalues.binary != "none") {
+      console.log(convertedvalues);
+    }
+  }, [convertedvalues]);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
+  const handleCopy = (text) => {
+    navigator.clipboard.writeText(text);
+    setCopiedText(text);
+  };
+  let elementary_octal = {
+    0: "000",
+    1: "001",
+    2: "010",
+    3: "011",
+    4: "100",
+    5: "101",
+    6: "110",
+    7: "111",
+  };
+  function integerpart_octal(int) {
+    let int_octal = [];
+    for (let i = 0; true; i++) {
+      let d = int % 8;
+      // int_octal.push(elementary_octal[d]);
+      int_octal.push(d);
+      if (int % 8 != 0) {
+        int = int - d;
+      }
+      int = int / 8;
+      if (int < 8) {
+        // int_octal.push(elementary_octal[int]);
+        int_octal.push(int);
+        break;
+      }
+    }
+    return int_octal;
+  }
+  function fractionalpart_octal(frac) {
+    let frac_binary = [];
+    for (let i = 0; i < 2; i++) {
+      frac = frac * 8;
+      let d = Math.floor(frac);
+      if (frac >= 1) {
+        frac = frac - Math.floor(frac);
+      }
+      // frac_binary.push(elementary_octal[d]);
+      frac_binary.push(d);
+    }
+    return frac_binary;
+  }
+  const decimal_to_octal = (num) => {
+    console.log("here", num);
+    if (`${num}`.includes(".")) {
+      let no_to_array = `${num}`.split(".");
+      let int_to_octal = integerpart_octal(Number(no_to_array[0]));
+      let frac_to_octal = fractionalpart_octal(Number(`0.${no_to_array[1]}`));
+      let final_ans =
+        int_to_octal.reverse().join("") + "." + frac_to_octal.join("");
+      setConvertedvalues({
+        ...convertedvalues,
+        octal: final_ans,
+      });
+    } else {
+      let int_to_octal = integerpart_octal(num);
+      let final_ans = int_to_octal.reverse().join("");
+      setConvertedvalues({
+        ...convertedvalues,
+        octal: final_ans,
+      });
+    }
+    console.log(convertedvalues.octal);
+  };
+  const decimal_to_hex = (decimal_num) => {
+    if (`${decimal_num}`.includes(".")) {
+      let no_to_array = `${decimal_num}`.split(".");
+      let int_to_hex = integerpart_hex(Number(no_to_array[0]));
+      let frac_to_hex = fractionalpart_hex(Number(`0.${no_to_array[1]}`));
+      let final_ans =
+        int_to_hex.reverse().join("") + "." + frac_to_hex.join("");
+      setConvertedvalues({
+        ...convertedvalues,
+        hexadecimal: final_ans,
+      });
+    } else {
+      let int_to_hex = integerpart_hex(decimal_num);
+      let final_ans = int_to_hex.reverse().join("");
+      setConvertedvalues({
+        ...convertedvalues,
+        hexadecimal: final_ans,
+      });
+    }
+    console.log(convertedvalues.hexadecimal);
+  };
+  let elementary_hex = {
+    0: "000",
+    1: "001",
+    2: "010",
+    3: "011",
+    4: "100",
+    5: "101",
+    6: "110",
+    7: "111",
+    8: "1000",
+    9: "1001",
+    A: "1010",
+    B: "1011",
+    C: "1100",
+    D: "1101",
+    E: "1110",
+    F: "1111",
+  };
+  let alph_hex = { 10: "A", 11: "B", 12: "C", 13: "D", 14: "E", 15: "F" };
+  function integerpart_hex(int) {
+    let int_hex = [];
+    for (let i = 0; true; i++) {
+      let d = int % 16;
+      if (d > 9) {
+        int_hex.push(alph_hex[d]);
+      } else {
+        int_hex.push(d);
+      }
+      if (int % 16 != 0) {
+        int = int - d;
+      }
+      int = int / 16;
+      if (int < 16) {
+        // int_octal.push(elementary_hex[int]);
+        if (int > 9) {
+          int_hex.push(alph_hex[int]);
+        }
+        int_hex.push(int);
+        break;
+      }
+    }
+    return int_hex;
+  }
+  function fractionalpart_hex(frac) {
+    let frac_hex = [];
+    for (let i = 0; i < 2; i++) {
+      frac = frac * 16;
+      let d = Math.floor(frac);
+      if (frac >= 1) {
+        frac = frac - Math.floor(frac);
+      }
+      // frac_hex.push(elementary_octal[d]);
+      if (d > 9) {
+        frac_hex.push(alph_hex[d]);
+      }
+      frac_hex.push(d);
+    }
+    return frac_hex;
+  }
+
+  function integerpart_binary(int) {
+    let int_binary = [];
+    for (let i = 0; true; i++) {
+      let d = int % 2;
+      int_binary.push(d);
+      if (int % 2 != 0) {
+        int = int - d;
+      }
+      int = int / 2;
+      if (int == 1) {
+        int_binary.push(1);
+        break;
+      }
+    }
+    return int_binary;
+  }
+  function fractionalpart_binary(frac) {
+    let frac_binary = [];
+    for (let i = 0; i < 4; i++) {
+      frac = frac * 2;
+      let d = Math.floor(frac);
+      frac_binary.push(d);
+      if (frac >= 1) {
+        frac = frac - 1;
+      }
+    }
+    return frac_binary;
+  }
+  const decimal_to_binary = (num) => {
+    if (`${num}`.includes(".")) {
+      let no_to_array = `${num}`.split(".");
+      let int_to_binary = integerpart_binary(Number(no_to_array[0]));
+      let frac_to_binary = fractionalpart_binary(Number(`0.${no_to_array[1]}`));
+      let final_ans =
+        int_to_binary.reverse().join("") + "." + frac_to_binary.join("");
+      setConvertedvalues({
+        ...convertedvalues,
+        binary: final_ans,
+      });
+    } else {
+      let int_to_binary = integerpart_binary(num);
+      let final_ans = int_to_binary.reverse().join("");
+      setConvertedvalues({
+        ...convertedvalues,
+        binary: final_ans,
+      });
+      console.log(final_ans);
+      console.log(convertedvalues.binary);
+    }
+  };
+  const conversion = (num) => {
+    decimal_to_binary(num);
+    decimal_to_octal(num);
+    decimal_to_hex(num);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 text-gray-800">
+      {/* Navbar */}
+      <nav className="flex justify-between items-center bg-white shadow-md px-8 py-4 sticky top-0">
+        <h1 className="text-2xl font-bold tracking-wide">BINARY CONVERTER</h1>
+        <div className="flex gap-4">
           <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+            href="https://github.com/"
             target="_blank"
             rel="noopener noreferrer"
+            className="flex items-center gap-2 bg-gray-800 text-white px-4 py-2 rounded-xl hover:bg-gray-700 transition"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
+            {/* <Github size={18} /> GitHub */}
           </a>
           <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+            href="https://linkedin.com/"
             target="_blank"
             rel="noopener noreferrer"
+            className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-500 transition"
           >
-            Read our docs
+            {/* <Linkedin size={18} /> LinkedIn */}
+          </a>
+          <a
+            href="#"
+            className="flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-xl hover:bg-purple-500 transition"
+          >
+            {/* <Code size={18} /> Code */}
           </a>
         </div>
+      </nav>
+
+      {/* Main Content */}
+      <main className="max-w-3xl mx-auto p-8">
+        {/* Heading */}
+        <h2 className="text-3xl font-semibold mb-6 text-center">
+          DECIMAL NUMBER CONVERTER{" "}
+        </h2>
+
+        {/* Card Section */}
+        <div className="bg-white shadow-md rounded-2xl p-6 space-y-6">
+          {/* Radio options */}
+          <div className="flex flex-wrap gap-3">
+            <div className="flex align-items-center">
+              <RadioButton
+                inputId="ingredient1"
+                name="conversion"
+                value="BINARY"
+                onChange={(e) => setIngredient(e.value)}
+                checked={ingredient === "BINARY"}
+              />
+              <label htmlFor="ingredient1" className="ml-2">
+                BINARY
+              </label>
+            </div>
+            <div className="flex align-items-center">
+              <RadioButton
+                inputId="ingredient2"
+                name="conversion"
+                value="OCTAL"
+                onChange={(e) => setIngredient(e.value)}
+                checked={ingredient === "OCTAL"}
+              />
+              <label htmlFor="ingredient2" className="ml-2">
+                OCTAL
+              </label>
+            </div>
+            <div className="flex align-items-center">
+              <RadioButton
+                inputId="ingredient3"
+                name="conversion"
+                value="HEXADECIMAL"
+                onChange={(e) => setIngredient(e.value)}
+                checked={ingredient === "HEXADECIMAL"}
+              />
+              <label htmlFor="ingredient3" className="ml-2">
+                HEXADECIMAL
+              </label>
+            </div>
+          </div>
+
+          {/* Input + Submit */}
+          <div className="flex items-center ">
+            <FloatLabel className="w-[60%]">
+              <InputText
+                id="Decimal Number"
+                className="w-[90%]"
+                value={inputValue}
+                onChange={(e) => {
+                  const newValue = e.target.value;
+                  // Allow only numbers
+                  if (/^\d*\.?\d*$/.test(newValue)) {
+                    setInputValue(newValue);
+                  }
+                }}
+              />
+              <label htmlFor="username">Decimal Number</label>
+            </FloatLabel>
+            <Button
+              label="Submit"
+              icon="pi pi-check"
+              onClick={() => {
+                // conversion(inputValue);
+                if (ingredient == "BINARY") decimal_to_binary(inputValue);
+                else if (ingredient == "OCTAL") decimal_to_octal(inputValue);
+                else if (ingredient == "HEXADECIMAL")
+                  decimal_to_hex(inputValue);
+
+                // console.log(ingredient);
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Fields with Copy buttons */}
+        <div className="mt-10 space-y-4">
+          {["Binary", "Octal", "Hexadecimal"].map((field, i) => {
+            const value = convertedvalues[field.toLowerCase()]; // dynamic property
+            return (
+              value !== "none" && (
+                <div
+                  key={i}
+                  className="flex items-center justify-between bg-white shadow-sm rounded-xl px-4 py-3 hover:shadow-md transition"
+                >
+                  <span>{`${field} Value : ${value}`}</span>
+                  <button
+                    onClick={() => handleCopy(value)}
+                    className="bg-green-600 text-white px-4 py-1.5 rounded-lg hover:bg-green-500 transition"
+                  >
+                    Copy
+                  </button>
+                </div>
+              )
+            );
+          })}
+        </div>
+
+        {/* Copy confirmation */}
+        {copiedText && (
+          <p className="mt-6 text-green-700 text-center font-medium">
+            Copied: <span className="font-semibold">{copiedText}</span>
+          </p>
+        )}
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
     </div>
   );
 }
