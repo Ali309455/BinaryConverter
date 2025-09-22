@@ -229,7 +229,7 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 text-gray-800">
       {/* Navbar */}
       <nav className="flex justify-between items-center bg-white shadow-md px-8 py-4 sticky top-0">
-        <h1 className="text-2xl font-bold tracking-wide">BINARY CONVERTER</h1>
+        <h1 className="text-2xl font-bold tracking-wide max-[600px]:text-[18px]">BINARY CONVERTER</h1>
         <div className="flex gap-4">
           <a
             href="https://github.com/"
@@ -259,7 +259,7 @@ export default function Home() {
       {/* Main Content */}
       <main className="max-w-3xl mx-auto p-8">
         {/* Heading */}
-        <h2 className="text-3xl font-semibold mb-6 text-center">
+        <h2 className="text-3xl font-semibold mb-6 text-center max-[600px]:text-[24px]">
           DECIMAL NUMBER CONVERTER{" "}
         </h2>
 
@@ -267,7 +267,7 @@ export default function Home() {
         <div className="bg-white shadow-md rounded-2xl p-6 space-y-6">
           {/* Radio options */}
           <div className="flex flex-wrap gap-3">
-            <div className="flex align-items-center">
+            <div className="flex align-items-center max-[600px]:text-[12px]">
               <RadioButton
                 inputId="ingredient1"
                 name="conversion"
@@ -279,7 +279,7 @@ export default function Home() {
                 BINARY
               </label>
             </div>
-            <div className="flex align-items-center">
+            <div className="flex align-items-center max-[600px]:text-[12px]">
               <RadioButton
                 inputId="ingredient2"
                 name="conversion"
@@ -291,7 +291,7 @@ export default function Home() {
                 OCTAL
               </label>
             </div>
-            <div className="flex align-items-center">
+            <div className="flex align-items-center max-[600px]:text-[12px]">
               <RadioButton
                 inputId="ingredient3"
                 name="conversion"
