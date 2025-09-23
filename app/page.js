@@ -246,6 +246,7 @@ export default function Home() {
           </a>
           <a
             href="https://github.com/Ali309455/BinaryConverter/blob/master/app/page.js"
+            target="_blank"
             className="flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-xl hover:bg-purple-500 transition"
           >
             <Code size={18} /> Code
