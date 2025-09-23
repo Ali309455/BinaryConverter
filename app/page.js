@@ -5,6 +5,7 @@ import { InputText } from "primereact/inputtext";
 import { RadioButton } from "primereact/radiobutton";
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import { Button } from "primereact/button";
+import { Code, Github, Linkedin, Menu, X } from "lucide-react"; // added Menu, X
 
 export default function Home() {
   const [inputValue, setInputValue] = useState("");
@@ -15,11 +16,7 @@ export default function Home() {
     octal: "none",
     hexadecimal: "none",
   });
-  useEffect(() => {
-    if (convertedvalues.binary != "none") {
-      console.log(convertedvalues);
-    }
-  }, [convertedvalues]);
+  const [isOpen, setIsOpen] = useState(false); // sidebar state
 
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text);
@@ -219,25 +216,25 @@ export default function Home() {
       console.log(convertedvalues.binary);
     }
   };
-  const conversion = (num) => {
-    decimal_to_binary(num);
-    decimal_to_octal(num);
-    decimal_to_hex(num);
-  };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 text-gray-800">
       {/* Navbar */}
-      <nav className="flex justify-between items-center bg-white shadow-md px-8 py-4 sticky top-0">
-        <h1 className="text-2xl font-bold tracking-wide max-[600px]:text-[18px]">BINARY CONVERTER</h1>
-        <div className="flex gap-4">
+      <nav className="flex justify-between items-center bg-white shadow-md px-8 py-4 sticky top-0 max-[400px]:px-4">
+        <h1 className="text-2xl font-bold tracking-wide max-[600px]:text-[18px] max-[400px]:text-[14px]">
+          BINARY CONVERTER
+        </h1>
+
+        {/* Desktop Buttons */}
+        <div className="hidden max-[550px]:hidden md:flex gap-4">
           <a
-            href="https://github.com/"
+            href="https://github.com/Ali309455"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 bg-gray-800 text-white px-4 py-2 rounded-xl hover:bg-gray-700 transition"
           >
-            {/* <Github size={18} /> GitHub */}
+            <Github size={18} /> GitHub
           </a>
           <a
             href="https://linkedin.com/"
@@ -245,29 +242,77 @@ export default function Home() {
             rel="noopener noreferrer"
             className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-500 transition"
           >
-            {/* <Linkedin size={18} /> LinkedIn */}
+            <Linkedin size={18} /> LinkedIn
           </a>
           <a
-            href="#"
+            href="https://github.com/Ali309455/BinaryConverter/blob/master/app/page.js"
             className="flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-xl hover:bg-purple-500 transition"
           >
-            {/* <Code size={18} /> Code */}
+            <Code size={18} /> Code
           </a>
         </div>
+
+        {/* Hamburger (shown below 550px) */}
+        <button
+          className="md:hidden max-[550px]:flex items-center justify-center p-2 rounded-lg hover:bg-gray-100"
+          onClick={() => setIsOpen(true)}
+        >
+          <Menu size={24} />
+        </button>
       </nav>
 
-      {/* Main Content */}
-      <main className="max-w-3xl mx-auto p-8">
+      {/* Sidebar */}
+      {isOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 z-50">
+          <div className="fixed top-0 right-0 w-64 h-full bg-white shadow-lg p-6 flex flex-col gap-6">
+            {/* Close button */}
+            <button
+              onClick={() => setIsOpen(false)}
+              className="self-end p-2 rounded-lg hover:bg-gray-100"
+            >
+              <X size={24} />
+            </button>
+
+            {/* Links inside sidebar */}
+            <a
+              href="https://github.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 bg-gray-800 text-white px-4 py-2 rounded-xl hover:bg-gray-700 transition"
+            >
+              <Github size={18} /> GitHub
+            </a>
+            <a
+              href="https://linkedin.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-500 transition"
+            >
+              <Linkedin size={18} /> LinkedIn
+            </a>
+            <a
+              href="#"
+              className="flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-xl hover:bg-purple-500 transition"
+            >
+              <Code size={18} /> Code
+            </a>
+          </div>
+        </div>
+      )}
+
+      {/* Main Content (unchanged) */}
+      
+      <main className="max-w-3xl mx-auto p-8 max-[400px]:p-4">
         {/* Heading */}
         <h2 className="text-3xl font-semibold mb-6 text-center max-[600px]:text-[24px]">
           DECIMAL NUMBER CONVERTER{" "}
         </h2>
 
         {/* Card Section */}
-        <div className="bg-white shadow-md rounded-2xl p-6 space-y-6">
+        <div className="bg-white shadow-md rounded-2xl p-6 space-y-6 max-[600px]:p-3">
           {/* Radio options */}
           <div className="flex flex-wrap gap-3">
-            <div className="flex align-items-center max-[600px]:text-[12px]">
+            <div className="flex align-items-center max-[600px]:text-[12px]  ">
               <RadioButton
                 inputId="ingredient1"
                 name="conversion"
@@ -279,7 +324,7 @@ export default function Home() {
                 BINARY
               </label>
             </div>
-            <div className="flex align-items-center max-[600px]:text-[12px]">
+            <div className="flex align-items-center max-[600px]:text-[12px]  ">
               <RadioButton
                 inputId="ingredient2"
                 name="conversion"
@@ -291,7 +336,7 @@ export default function Home() {
                 OCTAL
               </label>
             </div>
-            <div className="flex align-items-center max-[600px]:text-[12px]">
+            <div className="flex align-items-center max-[600px]:text-[12px]  ">
               <RadioButton
                 inputId="ingredient3"
                 name="conversion"
@@ -320,7 +365,7 @@ export default function Home() {
                   }
                 }}
               />
-              <label htmlFor="username">Decimal Number</label>
+              <label htmlFor="username" className="max-[600px]:text-[14px]">Decimal Number</label>
             </FloatLabel>
             <Button
               label="Submit"
@@ -371,3 +416,4 @@ export default function Home() {
     </div>
   );
 }
+
