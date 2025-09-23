@@ -237,7 +237,7 @@ export default function Home() {
             <Github size={18} /> GitHub
           </a>
           <a
-            href="https://linkedin.com/"
+            href="https://www.linkedin.com/in/thealiirshad/"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-500 transition"
