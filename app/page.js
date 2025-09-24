@@ -8,7 +8,7 @@ import { Button } from "primereact/button";
 import { Code, Github, Linkedin, Menu, X } from "lucide-react"; // added Menu, X
 
 export default function Home() {
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState("0");
   const [copiedText, setCopiedText] = useState("");
   const [ingredient, setIngredient] = useState("BINARY");
   const [convertedvalues, setConvertedvalues] = useState({
@@ -64,7 +64,6 @@ export default function Home() {
     return frac_binary;
   }
   const decimal_to_octal = (num) => {
-    console.log("here", num);
     if (`${num}`.includes(".")) {
       let no_to_array = `${num}`.split(".");
       let int_to_octal = integerpart_octal(Number(no_to_array[0]));
@@ -83,7 +82,6 @@ export default function Home() {
         octal: final_ans,
       });
     }
-    console.log(convertedvalues.octal);
   };
   const decimal_to_hex = (decimal_num) => {
     if (`${decimal_num}`.includes(".")) {
@@ -104,7 +102,6 @@ export default function Home() {
         hexadecimal: final_ans,
       });
     }
-    console.log(convertedvalues.hexadecimal);
   };
   let elementary_hex = {
     0: "000",
@@ -160,14 +157,19 @@ export default function Home() {
       // frac_hex.push(elementary_octal[d]);
       if (d > 9) {
         frac_hex.push(alph_hex[d]);
+      } else {
+        frac_hex.push(d);
       }
-      frac_hex.push(d);
     }
     return frac_hex;
   }
 
   function integerpart_binary(int) {
     let int_binary = [];
+    if (int == 0) {
+      int_binary = [0];
+      return int_binary;
+    }
     for (let i = 0; true; i++) {
       let d = int % 2;
       int_binary.push(d);
@@ -212,11 +214,8 @@ export default function Home() {
         ...convertedvalues,
         binary: final_ans,
       });
-      console.log(final_ans);
-      console.log(convertedvalues.binary);
     }
   };
-
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 text-gray-800">
@@ -302,7 +301,7 @@ export default function Home() {
       )}
 
       {/* Main Content (unchanged) */}
-      
+
       <main className="max-w-3xl mx-auto p-8 max-[400px]:p-4">
         {/* Heading */}
         <h2 className="text-3xl font-semibold mb-6 text-center max-[600px]:text-[24px]">
@@ -366,7 +365,9 @@ export default function Home() {
                   }
                 }}
               />
-              <label htmlFor="username" className="max-[600px]:text-[14px]">Decimal Number</label>
+              <label htmlFor="username" className="max-[600px]:text-[14px]">
+                Decimal Number
+              </label>
             </FloatLabel>
             <Button
               label="Submit"
@@ -417,4 +418,3 @@ export default function Home() {
     </div>
   );
 }
-
