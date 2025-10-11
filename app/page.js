@@ -128,7 +128,11 @@ export default function Home() {
       let d = int % 16;
       if (d > 9) {
         int_hex.push(alph_hex[d]);
+        console.log("here1")
       } else {
+        if (int > 9) {
+          int_hex.push(d);
+        }
         int_hex.push(d);
       }
       if (int % 16 != 0) {
@@ -139,11 +143,15 @@ export default function Home() {
         // int_octal.push(elementary_hex[int]);
         if (int > 9) {
           int_hex.push(alph_hex[int]);
+          console.log("here2")
         }
+        else{
         int_hex.push(int);
+        }
         break;
       }
     }
+    console.log('int_hex', int_hex)
     return int_hex;
   }
   function fractionalpart_hex(frac) {
