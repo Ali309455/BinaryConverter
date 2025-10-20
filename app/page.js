@@ -377,10 +377,10 @@ function hex_to_decimal(hex_num) {
 
         {/* Card Section */}
         <div className="">
-          <div className="bg-white shadow-md rounded-2xl h-[40px] mb-4 space-y-6 max-[600px]:p-3 w-[100%] flex items-center justify-around  relative overflow-hidden ">
+          <div className="bg-white shadow-md rounded-2xl h-[40px] max-[440px]:text-[12px] mb-4 space-y-6 max-[600px]:p-3 w-[100%] flex items-center justify-around  relative overflow-hidden ">
             {fromOthertodecisActive && (
               <div
-                className="bg-gray-100  h-[100%] w-[49.8%] m-0 flex items-center justify-center absolute left-0 cursor-pointer"
+                className="bg-gray-200 max-[440px]:text-[12px] h-[100%] w-[49.8%] m-0 flex items-center justify-center absolute left-0 cursor-pointer"
                 onClick={handleTabs}
               >
                 {" "}
@@ -389,7 +389,7 @@ function hex_to_decimal(hex_num) {
             )}
             {fromOthertodecisActive == false && (
               <div
-                className="bg-white  h-[100%] w-[49.8%] m-0 flex items-center justify-center absolute left-0 cursor-pointer"
+                className="bg-white  h-[100%] w-[49.8%] m-0 flex items-center justify-center max-[440px]:text-[12px] absolute left-0 cursor-pointer"
                 onClick={handleTabs}
               >
                 {" "}
@@ -398,7 +398,7 @@ function hex_to_decimal(hex_num) {
             )}
             {fromOthertodecisActive && (
               <div
-                className="bg-white  h-[100%] w-[49.8%] m-0 flex items-center justify-center absolute right-0 cursor-pointer"
+                className="bg-white max-[440px]:text-[12px]  h-[100%] w-[49.8%] m-0 flex items-center justify-center absolute right-0 cursor-pointer max-[440px]:text-[12px]"
                 onClick={handleTabs}
               >
                 {" "}
@@ -407,7 +407,7 @@ function hex_to_decimal(hex_num) {
             )}
             {fromOthertodecisActive == false && (
               <div
-                className="bg-gray-100  h-[100%] w-[49.8%] m-0 flex items-center justify-center absolute right-0 cursor-pointer"
+                className="bg-gray-200  h-[100%] w-[49.8%] m-0 flex items-center justify-center absolute right-0 cursor-pointer  max-[440px]:text-[12px]"
                 onClick={handleTabs}
               >
                 {" "}
@@ -488,7 +488,7 @@ function hex_to_decimal(hex_num) {
                   </label>
                 </FloatLabel>
                 <Button
-                  label="Submit"
+                  label="Convert"
                   icon="pi pi-check"
                   onClick={() => {
                     // conversion(inputValue);
@@ -590,7 +590,7 @@ function hex_to_decimal(hex_num) {
                   </label>
                 </FloatLabel>
                 <Button
-                  label="Submit"
+                  label="Convert"
                   icon="pi pi-check"
                   onClick={() => {
                     // conversion(inputValue);
